@@ -1,0 +1,142 @@
+Table Tile {
+  X int,
+  Y int,
+  Content TileType,
+  MonsterOdds int?,
+  LootOdds int?
+}
+
+enum TileType{
+  Ocean
+  Island
+  Hazard
+}
+
+Table Island {
+  ID int,
+  Name varchar(255),
+  Settled bool,
+  Outpost bool,
+  X int [ref: - Tile.X]
+  Y int [ref: - Tile.Y]
+  
+}
+
+Table Item {
+  ID int,
+  Name varchar(255),
+  Value int,
+  Loot bool,
+  Raw bool,
+  Description varchar(255),
+  Class ClassType,
+  Defense int?,
+  Attack int?,
+  Speed int?,
+  Integrity int?,
+  Rations int?,
+  MaxItengrity int?,
+  MaxRations int?,
+}
+
+enum ClassType{
+  Single
+  Slot
+  Merchant
+}
+
+Table IslandItem {
+  ItemID int [ref: > Item.ID]
+  IslandID int [ref: > Island.ID]
+  ValuePercent int,
+  Quantity int,
+  Buying bool,
+}
+
+Table Ship{
+  ID int,
+  Name varchar(255),
+  CargoSpaceQuantity int,
+  DefenseSlotsQuantity int,
+  AttackSlotsQuantity int,
+  AuxilarySlotsQuantity int,
+  Attack int,
+  Defense int,
+  IntegrityMax int,
+  RationsMax int,
+  Speed int,
+  Value int,
+}
+
+Table PlayerShip {
+  ID int,
+  PlayerID int [ref: - Player.ID]
+  ShipID int [ref: > Ship.ID]
+  X int,
+  Y int,
+  Name varchar(255),
+  CargoSpaceQuantity int,
+  DefenseSlotsQuantity int,
+  AttackSlotsQuantity int,
+  AuxilarySlotsQuantity int,
+  Attack int,
+  Defense int,
+  Ingrity int,
+  Rations int,
+  IntegrityMax int,
+  RationsMax int,
+  Speed int,
+  Value int,
+}
+
+Table Player {
+  ID int,
+  Name varchar,
+  Level int,
+  Experience int,
+  Gold int,
+}
+
+Table ShipItem {
+  ID int,
+  ShipID int [ref: > PlayerShip.ID]
+  ItemID int [ref: > Item.ID]
+  Slot SlotType,
+  Quantity int,
+}
+
+enum SlotType{
+  Auxilary
+  Defense
+  Attack
+  Cargo
+}
+
+Table Monster {
+  ID int,
+  Name varchar(255),
+  Attack int,
+  Defense int,
+  Health int,
+  Speed int,
+}
+
+Table TileMonster {
+  MonsterID int [ref: > Monster.ID]
+  HealthCurr int,
+  X int [ref: - Tile.X]
+  Y int [ref: - Tile.Y]
+}
+
+Table Outpost {
+  ID int,
+  IslandID int [ref: - Island.ID]
+  BuildCost int,
+  CargoSpace int,
+}
+
+Table OutpostItem {
+  OutpostID int [ref: > Outpost.ID]
+  ItemID int [ref: > Item.ID]
+  Quantity int,
+}
